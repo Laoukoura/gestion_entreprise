@@ -1,0 +1,160 @@
+{% extends 'gestion_emp/base.html' %}
+
+{% block title %}{{ titre }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-3">
+        <a href="{% url 'liste_employes' %}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Retour à la liste
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4>{{ titre }}</h4>
+            </div>
+            <div class="card-body">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    
+                    <!-- Informations personnelles -->
+                    <h5 class="border-bottom pb-2 mb-3">Informations personnelles</h5>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Matricule *</label>
+                            {{ form.matricule }}
+                            {% if form.matricule.errors %}
+                                <div class="text-danger">{{ form.matricule.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Genre *</label>
+                            {{ form.genre }}
+                            {% if form.genre.errors %}
+                                <div class="text-danger">{{ form.genre.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Nom *</label>
+                            {{ form.nom }}
+                            {% if form.nom.errors %}
+                                <div class="text-danger">{{ form.nom.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Prénom *</label>
+                            {{ form.prenom }}
+                            {% if form.prenom.errors %}
+                                <div class="text-danger">{{ form.prenom.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Date de naissance *</label>
+                            {{ form.date_naissance }}
+                            {% if form.date_naissance.errors %}
+                                <div class="text-danger">{{ form.date_naissance.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Lieu de naissance *</label>
+                            {{ form.lieu_naissance }}
+                            {% if form.lieu_naissance.errors %}
+                                <div class="text-danger">{{ form.lieu_naissance.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Contacts -->
+                    <h5 class="border-bottom pb-2 mb-3 mt-4">Contacts</h5>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Téléphone *</label>
+                            {{ form.telephone }}
+                            {% if form.telephone.errors %}
+                                <div class="text-danger">{{ form.telephone.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Email *</label>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                                <div class="text-danger">{{ form.email.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Adresse *</label>
+                        {{ form.adresse }}
+                        {% if form.adresse.errors %}
+                            <div class="text-danger">{{ form.adresse.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Informations professionnelles -->
+                    <h5 class="border-bottom pb-2 mb-3 mt-4">Informations professionnelles</h5>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Poste *</label>
+                            {{ form.poste }}
+                            {% if form.poste.errors %}
+                                <div class="text-danger">{{ form.poste.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Département *</label>
+                            {{ form.departement }}
+                            {% if form.departement.errors %}
+                                <div class="text-danger">{{ form.departement.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Date d'embauche *</label>
+                            {{ form.date_embauche }}
+                            {% if form.date_embauche.errors %}
+                                <div class="text-danger">{{ form.date_embauche.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Salaire de base *</label>
+                            {{ form.salaire_base }}
+                            {% if form.salaire_base.errors %}
+                                <div class="text-danger">{{ form.salaire_base.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Statut *</label>
+                            {{ form.statut }}
+                            {% if form.statut.errors %}
+                                <div class="text-danger">{{ form.statut.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-save"></i> Enregistrer
+                        </button>
+                        <a href="{% url 'liste_employes' %}" class="btn btn-secondary">
+                            <i class="bi bi-x-circle"></i> Annuler
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends 'gestion_paie/base.html' %}
+
+{% block title %}{{ titre }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-3">
+        <a href="{% url 'liste_bulletins' %}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Retour à la liste
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h4>{{ titre }}</h4>
+            </div>
+            <div class="card-body">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    
+                    <h5 class="border-bottom pb-2 mb-3">Informations générales</h5>
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label class="form-label">Employé *</label>
+                            {{ form.employe }}
+                            {% if form.employe.errors %}
+                                <div class="text-danger">{{ form.employe.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Mois *</label>
+                            {{ form.mois }}
+                            {% if form.mois.errors %}
+                                <div class="text-danger">{{ form.mois.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Année *</label>
+                            {{ form.annee }}
+                            {% if form.annee.errors %}
+                                <div class="text-danger">{{ form.annee.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <h5 class="border-bottom pb-2 mb-3 mt-4">Heures supplémentaires</h5>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Heures normales</label>
+                            {{ form.heures_sup_normales }}
+                            {% if form.heures_sup_normales.errors %}
+                                <div class="text-danger">{{ form.heures_sup_normales.errors }}</div>
+                            {% endif %}
+                            <small class="text-muted">Majorées à 125%</small>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Heures de nuit</label>
+                            {{ form.heures_sup_nuit }}
+                            {% if form.heures_sup_nuit.errors %}
+                                <div class="text-danger">{{ form.heures_sup_nuit.errors }}</div>
+                            {% endif %}
+                            <small class="text-muted">Majorées à 150%</small>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Heures week-end</label>
+                            {{ form.heures_sup_weekend }}
+                            {% if form.heures_sup_weekend.errors %}
+                                <div class="text-danger">{{ form.heures_sup_weekend.errors }}</div>
+                            {% endif %}
+                            <small class="text-muted">Majorées à 175%</small>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle"></i> 
+                        <strong>Note:</strong> Le salaire de base sera automatiquement récupéré depuis la fiche de l'employé. 
+                        Les primes et déductions peuvent être ajoutées après la création du bulletin.
+                    </div>
+
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-save"></i> Enregistrer
+                        </button>
+                        <a href="{% url 'liste_bulletins' %}" class="btn btn-secondary">
+                            <i class="bi bi-x-circle"></i> Annuler
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

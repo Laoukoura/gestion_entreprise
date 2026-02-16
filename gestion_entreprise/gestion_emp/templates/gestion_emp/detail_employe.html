@@ -1,0 +1,130 @@
+{% extends 'gestion_emp/base.html' %}
+
+{% block title %}Détails - {{ employe.get_nom_complet }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-3">
+        <a href="{% url 'liste_employes' %}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Retour à la liste
+        </a>
+        <a href="{% url 'modifier_employe' employe.pk %}" class="btn btn-warning">
+            <i class="bi bi-pencil"></i> Modifier
+        </a>
+        <a href="{% url 'supprimer_employe' employe.pk %}" class="btn btn-danger">
+            <i class="bi bi-trash"></i> Supprimer
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4><i class="bi bi-person-circle"></i> Informations personnelles</h4>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong>Matricule:</strong><br>
+                        <span class="badge bg-secondary fs-6">{{ employe.matricule }}</span>
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Statut:</strong><br>
+                        {% if employe.statut == 'actif' %}
+                            <span class="badge bg-success fs-6">{{ employe.get_statut_display }}</span>
+                        {% else %}
+                            <span class="badge bg-secondary fs-6">{{ employe.get_statut_display }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <hr>
+                <div class="row mb-2">
+                    <div class="col-md-4"><strong>Nom:</strong></div>
+                    <div class="col-md-8">{{ employe.nom }}</div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-md-4"><strong>Prénom:</strong></div>
+                    <div class="col-md-8">{{ employe.prenom }}</div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-md-4"><strong>Genre:</strong></div>
+                    <div class="col-md-8">{{ employe.get_genre_display }}</div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-md-4"><strong>Date de naissance:</strong></div>
+                    <div class="col-md-8">{{ employe.date_naissance|date:"d/m/Y" }}</div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-md-4"><strong>Lieu de naissance:</strong></div>
+                    <div class="col-md-8">{{ employe.lieu_naissance }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header bg-info text-white">
+                <h4><i class="bi bi-telephone"></i> Contacts</h4>
+            </div>
+            <div class="card-body">
+                <div class="row mb-2">
+                    <div class="col-md-4"><strong>Téléphone:</strong></div>
+                    <div class="col-md-8"><i class="bi bi-phone"></i> {{ employe.telephone }}</div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-md-4"><strong>Email:</strong></div>
+                    <div class="col-md-8"><i class="bi bi-envelope"></i> {{ employe.email }}</div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-md-4"><strong>Adresse:</strong></div>
+                    <div class="col-md-8"><i class="bi bi-geo-alt"></i> {{ employe.adresse }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">
+                <h4><i class="bi bi-briefcase"></i> Informations professionnelles</h4>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <strong>Poste:</strong><br>
+                    <span class="badge bg-primary fs-6">{{ employe.get_poste_display }}</span>
+                </div>
+                <div class="mb-3">
+                    <strong>Département:</strong><br>
+                    {{ employe.departement }}
+                </div>
+                <div class="mb-3">
+                    <strong>Date d'embauche:</strong><br>
+                    {{ employe.date_embauche|date:"d/m/Y" }}
+                </div>
+                <div class="mb-3">
+                    <strong>Ancienneté:</strong><br>
+                    {{ employe.anciennete }} an(s)
+                </div>
+                <div class="mb-3">
+                    <strong>Salaire de base:</strong><br>
+                    <span class="fs-5 text-success">{{ employe.salaire_base }} FCFA</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="bi bi-clock-history"></i> Métadonnées</h5>
+            </div>
+            <div class="card-body">
+                <small>
+                    <strong>Créé le:</strong><br>
+                    {{ employe.date_creation|date:"d/m/Y à H:i" }}<br><br>
+                    <strong>Modifié le:</strong><br>
+                    {{ employe.date_modification|date:"d/m/Y à H:i" }}
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

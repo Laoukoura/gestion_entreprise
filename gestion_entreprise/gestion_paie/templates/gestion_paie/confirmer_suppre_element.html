@@ -1,0 +1,49 @@
+{% extends 'gestion_paie/base.html' %}
+
+{% block title %}Confirmer la suppression{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h4><i class="bi bi-exclamation-triangle"></i> Confirmer la suppression</h4>
+            </div>
+            <div class="card-body">
+                <p class="lead">Êtes-vous sûr de vouloir supprimer cet élément de paie ?</p>
+                
+                <div class="alert alert-info">
+                    Le bulletin sera automatiquement recalculé après la suppression.
+                </div>
+
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5>{{ element.type_element.nom }}</h5>
+                        <p class="mb-1"><strong>Montant:</strong> {{ element.montant|floatformat:0 }} FCFA</p>
+                        <p class="mb-1"><strong>Type:</strong> 
+                            {% if element.type_element.type_element == 'prime' %}
+                                <span class="badge bg-info">Prime</span>
+                            {% else %}
+                                <span class="badge bg-warning">Déduction</span>
+                            {% endif %}
+                        </p>
+                        {% if element.commentaire %}
+                        <p class="mb-0"><strong>Commentaire:</strong> {{ element.commentaire }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash"></i> Oui, supprimer
+                    </button>
+                    <a href="{% url 'detail_bulletin' element.bulletin.pk %}" class="btn btn-secondary">
+                        <i class="bi bi-x-circle"></i> Annuler
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

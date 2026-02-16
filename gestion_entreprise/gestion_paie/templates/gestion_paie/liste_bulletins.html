@@ -1,0 +1,135 @@
+{% extends 'gestion_paie/base.html' %}
+
+{% block title %}Liste des bulletins{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2><i class="bi bi-file-earmark-text"></i> Liste des bulletins de paie</h2>
+            <div>
+                <a href="{% url 'creer_bulletin' %}" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Créer un bulletin
+                </a>
+                <a href="{% url 'generer_bulletins_masse' %}" class="btn btn-info">
+                    <i class="bi bi-stack"></i> Génération en masse
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Formulaire de recherche -->
+<div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+        <h5><i class="bi bi-search"></i> Rechercher des bulletins</h5>
+    </div>
+    <div class="card-body">
+        <form method="get">
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="form-label">Employé</label>
+                    {{ form.employe }}
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Mois</label>
+                    {{ form.mois }}
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Année</label>
+                    {{ form.annee }}
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Statut</label>
+                    {{ form.paye }}
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">&nbsp;</label>
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-search"></i> Rechercher
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Statistiques rapides -->
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="alert alert-info">
+            <strong><i class="bi bi-info-circle"></i> Total : {{ total_bulletins }} bulletin(s)</strong>
+        </div>
+    </div>
+</div>
+
+<!-- Liste des bulletins -->
+<div class="card">
+    <div class="card-body">
+        {% if bulletins %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Employé</th>
+                        <th>Matricule</th>
+                        <th>Période</th>
+                        <th>Salaire base</th>
+                        <th>Salaire brut</th>
+                        <th>Salaire net</th>
+                        <th>Statut</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for bulletin in bulletins %}
+                    <tr>
+                        <td>{{ bulletin.employe.get_nom_complet }}</td>
+                        <td><span class="badge bg-secondary">{{ bulletin.employe.matricule }}</span></td>
+                        <td>{{ bulletin.mois }}/{{ bulletin.annee }}</td>
+                        <td>{{ bulletin.salaire_base|floatformat:0 }}</td>
+                        <td>{{ bulletin.salaire_brut|floatformat:0 }}</td>
+                        <td><strong class="text-success">{{ bulletin.salaire_net|floatformat:0 }} FCFA</strong></td>
+                        <td>
+                            {% if bulletin.paye %}
+                                <span class="badge bg-success">
+                                    <i class="bi bi-check-circle"></i> Payé
+                                </span>
+                                <br><small>{{ bulletin.date_paiement|date:"d/m/Y" }}</small>
+                            {% else %}
+                                <span class="badge bg-warning">
+                                    <i class="bi bi-clock"></i> En attente
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'detail_bulletin' bulletin.pk %}" class="btn btn-sm btn-info" title="Détails">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="{% url 'modifier_bulletin' bulletin.pk %}" class="btn btn-sm btn-warning" title="Modifier">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            {% if not bulletin.paye %}
+                            <a href="{% url 'marquer_paye' bulletin.pk %}" class="btn btn-sm btn-success" title="Marquer payé">
+                                <i class="bi bi-check"></i>
+                            </a>
+                            {% endif %}
+                            <a href="{% url 'supprimer_bulletin' bulletin.pk %}" class="btn btn-sm btn-danger" title="Supprimer">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info text-center">
+            <i class="bi bi-info-circle"></i> Aucun bulletin trouvé. 
+            <a href="{% url 'creer_bulletin' %}">Créer un bulletin</a> ou 
+            <a href="{% url 'generer_bulletins_masse' %}">générer en masse</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends 'gestion_paie/base.html' %}
+
+{% block title %}{{ titre }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-3">
+        <a href="{% url 'liste_bulletins' %}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Retour
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h4><i class="bi bi-stack"></i> {{ titre }}</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i> 
+                    <strong>Cette fonction génère automatiquement des bulletins de paie pour plusieurs employés à la fois.</strong>
+                    <br>Les bulletins seront créés avec le salaire de base de chaque employé. Vous pourrez ensuite ajouter 
+                    individuellement les primes, déductions et heures supplémentaires pour chaque employé.
+                </div>
+
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    
+                    <h5 class="border-bottom pb-2 mb-3">Période</h5>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Mois *</label>
+                            {{ form.mois }}
+                            {% if form.mois.errors %}
+                                <div class="text-danger">{{ form.mois.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Année *</label>
+                            {{ form.annee }}
+                            {% if form.annee.errors %}
+                                <div class="text-danger">{{ form.annee.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <h5 class="border-bottom pb-2 mb-3 mt-4">Filtres (optionnels)</h5>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Département</label>
+                            {{ form.departement }}
+                            {% if form.departement.errors %}
+                                <div class="text-danger">{{ form.departement.errors }}</div>
+                            {% endif %}
+                            <small class="text-muted d-block mt-1">
+                                Laissez vide pour générer pour tous les départements
+                            </small>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Statut des employés</label>
+                            {{ form.statut }}
+                            {% if form.statut.errors %}
+                                <div class="text-danger">{{ form.statut.errors }}</div>
+                            {% endif %}
+                            <small class="text-muted d-block mt-1">
+                                Recommandé : Actifs uniquement
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle"></i> 
+                        <strong>Important:</strong> Les bulletins existants pour la période sélectionnée ne seront pas écrasés.
+                    </div>
+
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-info">
+                            <i class="bi bi-stack"></i> Générer les bulletins
+                        </button>
+                        <a href="{% url 'liste_bulletins' %}" class="btn btn-secondary">
+                            <i class="bi bi-x-circle"></i> Annuler
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

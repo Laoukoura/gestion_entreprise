@@ -1,0 +1,142 @@
+{% extends 'gestion_paie/base.html' %}
+
+{% block title %}Tableau de bord - Gestion de Paie{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <h2><i class="bi bi-speedometer2"></i> Tableau de bord de la paie</h2>
+    </div>
+</div>
+
+<!-- Statistiques -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card stat-card text-white bg-primary">
+            <div class="card-body text-center">
+                <i class="bi bi-currency-dollar fs-1"></i>
+                <h5 class="card-title mt-2">Masse salariale totale</h5>
+                <h2>{{ total_masse_salariale|floatformat:0 }} FCFA</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card text-white bg-info">
+            <div class="card-body text-center">
+                <i class="bi bi-file-earmark-text fs-1"></i>
+                <h5 class="card-title mt-2">Total bulletins</h5>
+                <h2>{{ total_bulletins }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card text-white bg-success">
+            <div class="card-body text-center">
+                <i class="bi bi-check-circle fs-1"></i>
+                <h5 class="card-title mt-2">Bulletins payés</h5>
+                <h2>{{ bulletins_payes }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card text-white bg-warning">
+            <div class="card-body text-center">
+                <i class="bi bi-clock-history fs-1"></i>
+                <h5 class="card-title mt-2">En attente</h5>
+                <h2>{{ bulletins_en_attente }}</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Actions rapides -->
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5><i class="bi bi-lightning"></i> Actions rapides</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <a href="{% url 'creer_bulletin' %}" class="btn btn-primary w-100 mb-2">
+                            <i class="bi bi-plus-circle"></i><br>Créer un bulletin
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="{% url 'generer_bulletins_masse' %}" class="btn btn-info w-100 mb-2">
+                            <i class="bi bi-stack"></i><br>Génération en masse
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="{% url 'liste_bulletins' %}" class="btn btn-warning w-100 mb-2">
+                            <i class="bi bi-search"></i><br>Rechercher bulletins
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="{% url 'liste_employes' %}" class="btn btn-secondary w-100 mb-2">
+                            <i class="bi bi-people"></i><br>Voir employés
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Derniers bulletins créés -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5><i class="bi bi-clock-history"></i> Derniers bulletins créés</h5>
+            </div>
+            <div class="card-body">
+                {% if derniers_bulletins %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Employé</th>
+                                <th>Période</th>
+                                <th>Salaire brut</th>
+                                <th>Salaire net</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for bulletin in derniers_bulletins %}
+                            <tr>
+                                <td>{{ bulletin.employe.get_nom_complet }}</td>
+                                <td>{{ bulletin.mois }}/{{ bulletin.annee }}</td>
+                                <td>{{ bulletin.salaire_brut|floatformat:0 }} FCFA</td>
+                                <td><strong>{{ bulletin.salaire_net|floatformat:0 }} FCFA</strong></td>
+                                <td>
+                                    {% if bulletin.paye %}
+                                        <span class="badge bg-success">Payé</span>
+                                    {% else %}
+                                        <span class="badge bg-warning">En attente</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'detail_bulletin' bulletin.pk %}" class="btn btn-sm btn-info">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i> Aucun bulletin créé pour le moment.
+                    <a href="{% url 'creer_bulletin' %}">Créer le premier bulletin</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

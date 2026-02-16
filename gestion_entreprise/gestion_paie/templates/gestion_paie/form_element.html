@@ -1,0 +1,76 @@
+{% extends 'gestion_paie/base.html' %}
+
+{% block title %}{{ titre }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-3">
+        <a href="{% url 'detail_bulletin' bulletin.pk %}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Retour au bulletin
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4>{{ titre }}</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info mb-4">
+                    <strong>Bulletin:</strong> {{ bulletin.employe.get_nom_complet }} - {{ bulletin.mois }}/{{ bulletin.annee }}
+                </div>
+
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Type d'élément *</label>
+                        {{ form.type_element }}
+                        {% if form.type_element.errors %}
+                            <div class="text-danger">{{ form.type_element.errors }}</div>
+                        {% endif %}
+                        <small class="text-muted d-block mt-1">
+                            Sélectionnez une prime ou une déduction
+                        </small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Montant (FCFA) *</label>
+                        {{ form.montant }}
+                        {% if form.montant.errors %}
+                            <div class="text-danger">{{ form.montant.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Commentaire</label>
+                        {{ form.commentaire }}
+                        {% if form.commentaire.errors %}
+                            <div class="text-danger">{{ form.commentaire.errors }}</div>
+                        {% endif %}
+                        <small class="text-muted d-block mt-1">
+                            Optionnel - ajoutez une note explicative
+                        </small>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle"></i> 
+                        Le bulletin sera automatiquement recalculé après l'ajout de cet élément.
+                    </div>
+
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-plus-circle"></i> Ajouter
+                        </button>
+                        <a href="{% url 'detail_bulletin' bulletin.pk %}" class="btn btn-secondary">
+                            <i class="bi bi-x-circle"></i> Annuler
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
